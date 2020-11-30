@@ -43,7 +43,7 @@ exports.handler = async () => {
             Bucket: s3bucket,
             Key: s3file,
         }).promise()).Body.toString()
-        const customers = parse(customersCSV, { columns: true })
+        let customers = parse(customersCSV, { columns: true })
         //Get Country rows
         const country = await getRowlinks(countryTableName, tableIds)
         //Get Status rows
@@ -71,30 +71,34 @@ exports.handler = async () => {
                 delete customer[key]
             }
         }
-        //Upsert customers
-        const { rows, failedBatchItems } = await HC.batchUpsertTableRows({
-            workbookId, tableId: tableIds[customersTableName], rowsToUpsert: customers.map((customer, i) => ({
-                batchItemId: `row-${i}`,
-                filter: {
-                    formula: `=FILTER(${customersTableName}, "${customersTableName}[Company] = %", "${companyNames[i]}")`,
-                },
-                cellsToUpdate: customer
-            }))
-        }).promise()
         let response = ''
-        if (rows) {
-            //Get counts of updated and appended rows
-            const results = { UPDATED: 0, APPENDED: 0 }
-            for (let { upsertAction } of Object.values(rows)) {
-                results[upsertAction]++
+        //Upsert customers 100 rows at a time
+        do {
+            const { rows, failedBatchItems } = await HC.batchUpsertTableRows({
+                workbookId, tableId: tableIds[customersTableName], rowsToUpsert: customers.slice(0, 100).map((customer, i) => ({
+                    batchItemId: `row-${i}`,
+                    filter: {
+                        formula: `=FILTER(${customersTableName}, "${customersTableName}[Company] = %", "${companyNames[i]}")`,
+                    },
+                    cellsToUpdate: customer
+                }))
+            }).promise()
+            //Discard the 100 rows that have been processed
+            customers = customers.slice(100)
+            if (rows) {
+                //Get counts of updated and appended rows
+                const results = { UPDATED: 0, APPENDED: 0 }
+                for (let { upsertAction } of Object.values(rows)) {
+                    results[upsertAction]++
+                }
+                response += `Update customers results: ${JSON.stringify(results)}\n`
             }
-            response = `Update customers results: ${JSON.stringify(results)}`
-        }
-        if (failedBatchItems) {
-            const error = `Upsert failed for these items: ${JSON.stringify(failedBatchItems, null, 2)}`
-            console.error(error)
-            response += error
-        }
+            if (failedBatchItems) {
+                const error = `Upsert failed for these items: ${JSON.stringify(failedBatchItems, null, 2)}\n`
+                console.error(error)
+                response += error
+            }
+        } while (customers.length > 0)
         console.log(response)
         return response
     } catch (error) {
