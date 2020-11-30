@@ -8,7 +8,7 @@
     "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
     "cdk": "cdk",
     "test": "jest",
-    "postinstall": "(cd lamdba/ImportCustomers && npm install); (cd lambda/ExportContactHistory && npm install)"
+    "postinstall": "(cd lambda/ImportCustomers && npm install); (cd lambda/ExportContactHistory && npm install)"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.60.0",
@@ -17,7 +17,8 @@
     "@aws-cdk/aws-events-targets": "^1.60.0",
     "@aws-cdk/aws-s3": "^1.60.0",
     "@aws-cdk/aws-s3-deployment": "^1.60.0",
-    "@aws-cdk/core": "1.60.0"
+    "@aws-cdk/core": "1.60.0",
+    "@mobileposse/auto-delete-bucket": "^1.55.0"
   },
   "dependencies": {}
 }
