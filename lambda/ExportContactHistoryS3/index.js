@@ -2,7 +2,6 @@
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  * SPDX-License-Identifier: MIT-0
  */
-
 /**
  * Read stock quotes from Amazon S3
  * Write stock quotes to Amazon Honeycode

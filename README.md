@@ -1,7 +1,7 @@
 # Amazon Honeycode API Labs
 
 This lab shows how to:
- * Use AWS Lambda functions to write data from an external source (Amazon S3) into Amazon Honeycode
+ * Use AWS Lambda functions to write data from external sources (Amazon S3, Amazon DynamoDB) into Amazon Honeycode. The lambda functions are triggered when a new file is added to the S3 bucket or when items in DynamoDB table are added/updated/removed
  * Use AWS Lambda functions to read data from Amazon Honeycode, save them to Amazon S3 and mark those records in Honeycode as exported
 
 This project uses AWS CDK to create the required resources.
@@ -18,11 +18,14 @@ This project uses AWS CDK to create the required resources.
 * bin
   * honeycode-api-lab.js (Main entry for stack creation)
 * data
-  * customers.csv (Sample data)
+  * customers-s3.csv (Sample data for S3 data import)
+  * customers-dynamodb.json (Sample data for DynamoDB data import)
 * lamdba
-  * ImportCustomers (ImportCustomers Lamdba source)
-  * ExportContactHistory (ExportContactHistory Lamdba source)
+  * ImportCustomersS3 (Import customers from S3)
+  * ImportCustomersDynamoDB (Import customers from DynamoDB)
+  * ExportContactHistory (Export contact history from Honeycode to S3)
 * lib
   * honeycode-api-lab-stack.js (Stack definitions)
-  * import-customers.js (Import Customers resources definition)
+  * import-customers-s3.js (Import customers from S3 resources definition)
+  * import-customers-dynamodb.js (Import customers from DynamoDB resources definition)
   * export-contact-history.js (Export Contact History resources definition)

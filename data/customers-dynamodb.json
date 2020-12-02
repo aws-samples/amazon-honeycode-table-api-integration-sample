@@ -1,0 +1,23 @@
+{
+    "Company": {
+        "S": "AnyCompany Water"
+    },
+    "Valuation": {
+        "N": 10
+    },
+    "Opportunity": {
+        "N": 5
+    },
+    "Country": {
+        "S": " US"
+    },
+    "Status": {
+        "S": "New"
+    },
+    "Contact": {
+        "S": "John Doe (ceo@example.com)"
+    },
+    "Account Manager": {
+        "S": "name@example.com"
+    }
+}
