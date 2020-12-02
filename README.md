@@ -6,6 +6,9 @@ This lab shows how to:
 
 This project uses AWS CDK to create the required resources.
 
+## Architecture
+![Architecture](architecture.png)
+
 ## Useful commands
 
  * `cdk bootstrap`        bootstrap this stack
