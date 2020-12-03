@@ -1,5 +1,5 @@
 {
-  "name": "importcustomers",
+  "name": "importcustomerss3",
   "version": "1.0.0",
   "description": "This lambda is invoked whenever an object is added to an S3 bucket and it uses the Honeycode StartTableDataImportJobRequest API to initiate the import of customer records from the S3 bucket",
   "main": "index.js",
@@ -10,5 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.802.0"
+  },
+  "repository": {
+    "url": "https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample"
   }
 }

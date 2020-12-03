@@ -8,4 +8,4 @@ const cdk = require('@aws-cdk/core');
 const { HoneycodeApiLabStack } = require('../lib/honeycode-api-lab-stack');
 
 const app = new cdk.App();
-new HoneycodeApiLabStack(app, 'HoneycodeApiLabStackV2');
+new HoneycodeApiLabStack(app, 'HoneycodeLab');

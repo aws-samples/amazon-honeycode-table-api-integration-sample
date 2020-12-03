@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: MIT-0
  */
 /**
- * Read stock quotes from Amazon S3
- * Write stock quotes to Amazon Honeycode
+ * This lambda uses the `QueryTableRows` Honeycode APs to read contact history and saves them to an S3 bucket and then sets the Exported column in Honeycode table to today's date using the `BatchUpdateRows` Honeycode API
  */
 const AWS = require('aws-sdk') //Requires atleast VERSION 2.7x
 const HC = new AWS.Honeycode({ region: 'us-west-2' })

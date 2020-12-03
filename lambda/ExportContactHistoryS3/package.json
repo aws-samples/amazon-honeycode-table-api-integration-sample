@@ -1,5 +1,5 @@
 {
-  "name": "exportcontacthistory",
+  "name": "exportcontacthistorys3",
   "version": "1.0.0",
   "description": "This lambda uses the QueryTableRows Honeycode APs to read contact history and saves them to an S3 bucket and then sets the Exported column in Honeycode table to today's date",
   "main": "index.js",
@@ -11,5 +11,8 @@
   "dependencies": {
     "aws-sdk": "^2.802.0",
     "csv-stringify": "^5.5.3"
+  },
+  "repository": {
+    "url": "https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample"
   }
 }

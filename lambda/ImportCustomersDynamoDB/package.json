@@ -1,5 +1,5 @@
 {
-  "name": "importcustomers",
+  "name": "importcustomersdynamodb",
   "version": "1.0.0",
   "description": "This lambda is invoked by DynamoDB whenever items are added/updated/removed. The lambda uses Honeycode APIs to add/update/remove the records in Honeycode",
   "main": "index.js",
@@ -10,5 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.802.0"
+  },
+  "repository": {
+    "url": "https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample"
   }
 }

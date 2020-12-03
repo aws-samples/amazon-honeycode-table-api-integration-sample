@@ -8,20 +8,24 @@
     "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
     "cdk": "cdk",
     "test": "jest",
-    "postinstall": "(cd lamdba/ImportCustomersDynamoDB && npm install); (cd lamdba/ImportCustomersS3 && npm install); (cd lambda/ExportContactHistoryS3 && npm install)"
+    "postinstall": "(cd lambda/ImportCustomersDynamoDB && npm install); (cd lambda/ImportCustomersS3 && npm install); (cd lambda/ExportContactHistoryS3 && npm install)"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.75.0",
-    "@aws-cdk/aws-dynamodb": "^1.75.0",
-    "@aws-cdk/aws-events-targets": "^1.75.0",
-    "@aws-cdk/aws-lambda-event-sources": "^1.75.0",
-    "@aws-cdk/aws-s3": "^1.75.0",
-    "@aws-cdk/aws-s3-deployment": "^1.75.0",
-    "@aws-cdk/core": "1.75.0",
-    "@aws-cdk/custom-resources": "^1.75.0",
-    "@mobileposse/auto-delete-bucket": "^1.55.0",
-    "aws-cdk": "1.75.0",
-    "jest": "^26.0.4"
+    "@aws-cdk/assert": "1.55.0",
+    "@aws-cdk/aws-dynamodb": "1.55.0",
+    "@aws-cdk/aws-events-targets": "1.55.0",
+    "@aws-cdk/aws-lambda-event-sources": "1.55.0",
+    "@aws-cdk/aws-s3": "1.55.0",
+    "@aws-cdk/aws-s3-deployment": "1.55.0",
+    "@aws-cdk/core": "1.55.0",
+    "@aws-cdk/custom-resources": "1.55.0",
+    "@mobileposse/auto-delete-bucket": "1.55.0",
+    "aws-cdk": "1.55.0",
+    "jest": "^25.5.4"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample"
+  }
 }
