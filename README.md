@@ -8,7 +8,7 @@ This project uses AWS CDK to create the required resources.
 
 ## Documentation
 
-An architecture diagram and instructions for using this sample code can be found here: [Amazon Honeycode API QuickSight Integration documentation](doc/README.md)
+An architecture diagram and instructions for using this sample code can be found here: [Amazon Honeycode Table API sample code documentation](doc/README.md)
 
 ## Useful commands
 
