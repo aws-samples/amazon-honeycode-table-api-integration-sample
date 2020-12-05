@@ -67,6 +67,7 @@ cdk deploy
     2. You can add/modify records in your **lamdba/ImportCustomersS3/customers-s3.csv** file in Cloud9 and run **cdk deploy** to replace/update the file in S3 bucket. Changes to customers-s3.csv file will be imported into Honeycode in about a minute. 
     3. Open [Amazon DynamoDB console](https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:), view the table starting with the name **\*HoneycodeLab-Customers\***, open the **Items** tab where you can add/update/remove items in the table. Changes you make in this table should appear in the Honeycode **A_Customers** table. 
     4. Open the S3 bucket with the name **\*honeycodelab-contacthistorybucket\*** in your [Amazon S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-west-2#), open the directories under that bucket to download/open the CSV file containing the Contact History records. You can add new contact history by opening the Honeycode Customer Tracker app, selecting a customer and adding a new contact detail. Newly added contact history data should appear in the S3 bucket as a new CSV file in about a minute.
+>Tip: If you would like to extend this sample code to visualize the contact history that you exported to S3, you can refer to the related sample code in this repo: [Amazon Honeycode API QuickSight integration](https://github.com/aws-samples/amazon-honeycode-quicksight-integration-sample)
 
 ## Cleanup
 

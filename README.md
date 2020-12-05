@@ -1,4 +1,4 @@
-# Amazon Honeycode API Labs
+# Use Amazon Honeycode Table API to integrate with Amazon S3 and Amazon DynamoDB
 
 This lab shows how to:
  * Use AWS Lambda functions to write data from external sources (Amazon S3, Amazon DynamoDB) into Amazon Honeycode. The lambda functions are triggered when a new file is added to the S3 bucket or when items in DynamoDB table are added/updated/removed
@@ -9,6 +9,10 @@ This project uses AWS CDK to create the required resources.
 ## Documentation
 
 An architecture diagram and instructions for using this sample code can be found here: [Amazon Honeycode Table API sample code documentation](doc/README.md)
+
+## Related Repository
+
+If you would like to extend this sample code to visualize the contact history that you exported to S3, you can refer to the related sample code in this repo: [Amazon Honeycode API QuickSight integration](https://github.com/aws-samples/amazon-honeycode-quicksight-integration-sample)
 
 ## Useful commands
 
