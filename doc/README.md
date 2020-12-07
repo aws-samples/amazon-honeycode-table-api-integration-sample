@@ -1,7 +1,5 @@
 # Use APIs to integrate external systems with Amazon Honeycode
 
-By Kandha Sankarapandian, *Senior Solutions Architect*
-
 [Amazon Honeycode](https://www.honeycode.aws/) gives you the power to build custom apps without programming. **Amazon Honeycode APIs** help you extend Honeycode beyond its existing capabilities and to integrate Honeycode with your existing systems. Honeycode APIs do require IT level skills to set them up. If you are looking to integrate Honeycode without programming consider using one of our supported integration platforms such as [Amazon AppFlow](https://aws.amazon.com/appflow/) and [Zapier](https://zapier.com/)
 
 Honeycode Table APIs let you query the meta data such as listing tables within workbooks, perform batch operations on your table data such as adding, updating and deleting data in your Honeycode tables, and to import data from external sources. You can find a [full list of Honeycode APIs here](https://docs.aws.amazon.com/honeycode/latest/APIReference/Welcome.html) 
