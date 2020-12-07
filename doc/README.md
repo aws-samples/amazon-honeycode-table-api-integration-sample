@@ -27,28 +27,27 @@ Honeycode provides templates for a number of common use cases. Using a [Honeycod
 
 In this section, you create a [Serverless](https://aws.amazon.com/serverless/) API application to import customer records into Honeycode from [Amazon S3](https://aws.amazon.com/s3/) and [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) and to export customer contacts from Honeycode. After the customer contact history is exported to Amazon S3, the API application updates the **Exported** column in Honeycode with the current date. The API application is deployed using [AWS CDK](https://aws.amazon.com/cdk/), which let you manage your infrastructure using code. The API application includes three [AWS Lambda](https://aws.amazon.com/lambda/) functions, the **ImportCustomersS3** Lambda function to start an import of customer records when a CSV file is added to an S3 bucket, the **ImportCustomersDynamoDB** Lambda function to add/update/remove data in Honeycode tables in response to changes in a Amazon DynamoDB table and the **ExportContactHistoryS3** Lambda function (invoked every minute) to read the latest customer contact history and store them as a CSV file in a S3 bucket. Here are the steps to deploy the serverless API application
 
-1. Download the [source package](https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample) as a Zip file
-2. Create/Open a [AWS Cloud9](https://aws.amazon.com/cloud9/) IDE instance. This may take a few minutes to complete. I recommend the following configuration for this lab:
+1. Create/Open a [AWS Cloud9](https://aws.amazon.com/cloud9/) IDE instance. This may take a few minutes to complete. I recommend the following configuration for this lab:
     * Name: Honeycode API Lab
     * Environment type: Create a new EC2 instance for environment (direct access)
     * Instance type: t2.micro (1 GiB RAM + 1 vCPU)
     * Platform: Amazon Linux 2 (recommended)
     * Cost-saving setting: After 30 minutes (default)
 > Note: If you’d like to use your own machine for deploying the API application, you can do so by following the instructions to [install and configure AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_prerequisites)
-3. Upload the source package by clicking on File → Upload Local File to your Cloud9 instance and unzip it
+2. Download the source package by running the following commands on the Cloud9 terminal
 ```
-unzip amazon-honeycode-table-api-integration-sample-main.zip
-cd amazon-honeycode-table-api-integration-sample-main
+git clone https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample.git
+cd amazon-honeycode-table-api-integration-sample
 ```
 > Tip: Open **bin/honeycode-api-lab.js** to view the name of the stack. You can optionally rename the stack from **HoneycodeLab** to say **JohnHoneycodeLab** by adding your first name so it is easier to identify the resources that you create
-4. Open and update the **workbookId** with the value copied from your Customer Tracker Honeycode app
+3. Open and update the **workbookId** with the value copied from your Customer Tracker Honeycode app
     * **lambda/ImportCustomersS3/env.json**
     * **lambda/ImportCustomersDynamoDB/env.json**
     * **lambda/ExportContactHistoryS3/env.json** 
-5. Open and replace [name@example.com](mailto:name@example.com) with the email address that you used for logging into Honeycode in:
+4. Open and replace [name@example.com](mailto:name@example.com) with the email address that you used for logging into Honeycode in:
     * **data/customers-s3.csv**
     * **data/customers-dynamodb.json**
-6. Run the following commands to start the deployment. This will take a few minutes to complete. 
+5. Run the following commands to start the deployment. This will take a few minutes to complete. 
 ```
 npm install
 cdk bootstrap
@@ -60,7 +59,7 @@ cdk deploy
 >    * Create the event source (DynamoDB, S3 or Event Timer) for the Lambda functions
 >    * Add permissions for the Lambda to access Honeycode
 >    * Initialize the content in DynamoDB table, S3 bucket
-7. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
+6. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
     1. Open **A_Customers** table in Honeycode and verify that new records, **AnyCompany Auto** and **AnyCompany Water**, have been imported from S3 and DynamoDB respectively. 
     2. You can add/modify records in your **lamdba/ImportCustomersS3/customers-s3.csv** file in Cloud9 and run **cdk deploy** to replace/update the file in S3 bucket. Changes to customers-s3.csv file will be imported into Honeycode in about a minute. 
     3. Open [Amazon DynamoDB console](https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:), view the table starting with the name **\*HoneycodeLab-Customers\***, open the **Items** tab where you can add/update/remove items in the table. Changes you make in this table should appear in the Honeycode **A_Customers** table. 
