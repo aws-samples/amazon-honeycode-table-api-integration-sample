@@ -8,13 +8,23 @@
 const AWS = require('aws-sdk') //Requires atleast VERSION 2.7x
 const HC = new AWS.Honeycode({ region: 'us-west-2' })
 const S3 = new AWS.S3()
-const stringify = require('csv-stringify/lib/sync')
 const { workbookId, contactHistoryTableName, s3bucket } = process.env
 
+//Convert from JSON to CSV
+const stringify = require('csv-stringify/lib/sync')
+
+//Convert from Honeycode rows JSON array to Key:Value JSON format
+/*
+const stringify = (rows, { columns }) => JSON.stringify(rows.map(row => row.reduce((values, value, i) => {
+    values[columns[i].key] = value
+    return values
+}, {})), null, 2)
+*/
 
 const saveToS3 = Body => {
     const now = new Date()
-    const Key = `${now.getFullYear()}/${now.getMonth()}/${now.getDate()}/${now.getTime()}.csv`
+    const Key = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${now.getTime()}.csv`
+    //const Key = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${now.getTime()}.json`
     return S3.putObject({ Body, Bucket: s3bucket, Key }).promise()
 }
 
@@ -70,7 +80,7 @@ exports.handler = async () => {
                 }
             }
             if (rows.length > 0) {
-                //Write to CSV
+                //Write to S3
                 await saveToS3(stringify(rows, { header: true, columns }))
                 //Update exported date in table
                 const { failedBatchItems } = await HC.batchUpdateTableRows({
