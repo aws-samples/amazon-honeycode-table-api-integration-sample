@@ -40,9 +40,9 @@ git clone https://github.com/aws-samples/amazon-honeycode-table-api-integration-
 cd amazon-honeycode-table-api-integration-sample
 ```
 > Tip: Open **bin/honeycode-api-lab.js** to view the name of the stack. You can optionally rename the stack from **HoneycodeLab** to say **JohnHoneycodeLab** by adding your first name so it is easier to identify the resources that you create
-3. Open and update the **workbookId** with the value copied from your Customer Tracker Honeycode app
+3. Open **lambda/env.json** update the **workbookId** with the value copied from your Customer Tracker Honeycode app
     * **lambda/env.json**
-4. Open and replace [name@example.com](mailto:name@example.com) with the email address that you used for logging into Honeycode in:
+4. Open the following files and replace **name@example.com** with the email address that you used for logging into Honeycode in:
     * **data/customers-s3.csv**
     * **data/customers-dynamodb.json**
 5. Run the following commands to start the deployment. This will take a few minutes to complete. 
@@ -57,12 +57,27 @@ cdk deploy
 >    * Create the event source (DynamoDB, S3 or Event Timer) for the Lambda functions
 >    * Add permissions for the Lambda to access Honeycode
 >    * Initialize the content in DynamoDB table, S3 bucket
-6. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
+
+7. Copy the **S3manifestfileURL** value that is printed on the terminal at the end of `cdk deploy`. Use this URL to create the data set for visualization in Amazon QuickSight.
+
+8. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
     1. Open **A_Customers** table in Honeycode and verify that new records, **AnyCompany Auto** and **AnyCompany Water**, have been imported from S3 and DynamoDB respectively. 
     2. You can add/modify records in your **lamdba/ImportCustomersS3/customers-s3.csv** file in Cloud9 and run **cdk deploy** to replace/update the file in S3 bucket. Changes to customers-s3.csv file will be imported into Honeycode in about a minute. 
     3. Open [Amazon DynamoDB console](https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:), view the table starting with the name **\*HoneycodeLab-Customers\***, open the **Items** tab where you can add/update/remove items in the table. Changes you make in this table should appear in the Honeycode **A_Customers** table. 
     4. Open the S3 bucket with the name **\*honeycodelab-contacthistorybucket\*** in your [Amazon S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-west-2#), open the directories under that bucket to download/open the CSV file containing the Contact History records. You can add new contact history by opening the Honeycode Customer Tracker app, selecting a customer and adding a new contact detail. Newly added contact history data should appear in the S3 bucket as a new CSV file in about a minute.
->Tip: If you would like to extend this sample code to visualize the contact history that you exported to S3, you can refer to the related sample code in this repo: [Amazon Honeycode API QuickSight integration](https://github.com/aws-samples/amazon-honeycode-quicksight-integration-sample)
+
+## Create a visualization dashboard using Amazon QuickSight
+
+In this section, you will create a visualization of the customer contact history that we exported using [Amazon QuickSight](https://aws.amazon.com/quicksight/). 
+1. Open [Amazon QuickSight](https://us-west-2.quicksight.aws.amazon.com/sn/start/analyses)
+> Note: If you do not have an Amazon QuickSight account you will be asked to create one at this step. You can [start your free trial](https://aws.amazon.com/quicksight/pricing/) to complete this section
+2. Follow the instructions on this page [to authorize Amazon QuickSight to access the **contacthistory** S3 bucket](https://docs.aws.amazon.com/quicksight/latest/user/troubleshoot-connect-S3.html)
+3. Click on the **New analysis** button
+4. Click on the **New Dataset** button  
+5. Click on the **S3** as datasource
+6. In the *New S3 data source* popup, enter a **Data source name** and select the **Upload** option to upload the **s3-manifest.json** file that you downloaded in the previous section. Click **Connect** 
+7. In the *Finish data set creation* screen, click on **Visualize**
+8. You can now select one or more fields (for e.g. Contact Type), from the Field list and let QuickSight suggest a visualization or change the visual type. Once you have the visualization you need, you can Share the dashboard or analysis with your team mates
 
 ## Cleanup
 
@@ -71,6 +86,7 @@ cdk deploy
 cdk destroy
 ```
 2. Delete the Cloud9 IDE by opening the [Cloud9 console](https://us-west-2.console.aws.amazon.com/cloud9/home?region=us-west-2) and clicking on Delete
+3. You can unsubscribe from Amazon QuickSight by following the [instructions on this page](https://docs.aws.amazon.com/quicksight/latest/user/closing-account.html)
 
 ## Summary
 

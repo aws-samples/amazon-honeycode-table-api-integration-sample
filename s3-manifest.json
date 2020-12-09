@@ -1,0 +1,9 @@
+{
+    "fileLocations": [
+        {
+            "URIPrefixes": [
+                "s3://<BUCKETNAME>/"
+            ]
+        }
+    ]
+}
