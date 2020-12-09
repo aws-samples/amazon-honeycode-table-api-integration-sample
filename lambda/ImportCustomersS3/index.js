@@ -11,6 +11,7 @@ const AWS = require('aws-sdk')
 const HC = new AWS.Honeycode({ region: 'us-west-2' })
 const S3 = new AWS.S3()
 
+//Read and initialize variables from the lambda environment. The lambda environment is set by CDK using env.json file 
 const { workbookId, customersTableName } = process.env
 
 exports.handler = async ({ Records }) => {
