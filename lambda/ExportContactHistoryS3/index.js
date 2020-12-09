@@ -22,9 +22,9 @@ const stringify = (rows, { columns }) => JSON.stringify(rows.map(row => row.redu
 
 const saveToS3 = Body => {
     const now = new Date()
-    const Key = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${now.getTime()}.csv`
+    const Key = `csv/${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${now.getTime()}.csv`
     //Use json file extension when using alternative stringify implementation to store as json data
-    //const Key = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${now.getTime()}.json`
+    //const Key = `json/${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}/${now.getTime()}.json`
     return S3.putObject({ Body, Bucket: s3bucket, Key }).promise()
 }
 

@@ -58,7 +58,7 @@ cdk deploy
 >    * Add permissions for the Lambda to access Honeycode
 >    * Initialize the content in DynamoDB table, S3 bucket
 
-7. Copy the **ContactHistoryBucketName** value that is printed on the terminal at the end of `cdk deploy`. Open the **s3-manifest.json** file in Cloud9 and update **BUCKETNAME** with the bucket name that you copied. Download this file to your machine as we will be using it to create the data set for visualization in Amazon QuickSight.
+7. Copy the **S3manifestfileURL** value that is printed on the terminal at the end of `cdk deploy`. Use this URL to create the data set for visualization in Amazon QuickSight.
 
 8. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
     1. Open **A_Customers** table in Honeycode and verify that new records, **AnyCompany Auto** and **AnyCompany Water**, have been imported from S3 and DynamoDB respectively. 
@@ -71,13 +71,13 @@ cdk deploy
 In this section, you will create a visualization of the customer contact history that we exported using [Amazon QuickSight](https://aws.amazon.com/quicksight/). 
 1. Open [Amazon QuickSight](https://us-west-2.quicksight.aws.amazon.com/sn/start/analyses)
 > Note: If you do not have an Amazon QuickSight account you will be asked to create one at this step. You can [start your free trial](https://aws.amazon.com/quicksight/pricing/) to complete this section
-2. Click on the **New analysis** button
-3. Click on the **New Dataset** button  
-4. Click on the **S3** as datasource
-5. In the *New S3 data source* popup, enter a **Data source name** and select the **Upload** option to upload the **s3-manifest.json** file that you downloaded in the previous section. Click **Connect** 
-6. In the *Finish data set creation* screen, click on **Visualize**
-7. You can now select one or more fields (for e.g. Contact Type), from the Field list and let QuickSight suggest a visualization or change the visual type
-8. Once you have the visualization you need, you can Share the dashboard or analysis with your team mates
+2. Follow the instructions on this page [to authorize Amazon QuickSight to access the **contacthistory** S3 bucket](https://docs.aws.amazon.com/quicksight/latest/user/troubleshoot-connect-S3.html)
+3. Click on the **New analysis** button
+4. Click on the **New Dataset** button  
+5. Click on the **S3** as datasource
+6. In the *New S3 data source* popup, enter a **Data source name** and select the **Upload** option to upload the **s3-manifest.json** file that you downloaded in the previous section. Click **Connect** 
+7. In the *Finish data set creation* screen, click on **Visualize**
+8. You can now select one or more fields (for e.g. Contact Type), from the Field list and let QuickSight suggest a visualization or change the visual type. Once you have the visualization you need, you can Share the dashboard or analysis with your team mates
 
 ## Cleanup
 

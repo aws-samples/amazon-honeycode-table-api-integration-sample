@@ -3,10 +3,10 @@
         "S": "AnyCompany Water"
     },
     "Valuation": {
-        "N": 10
+        "N": "10"
     },
     "Opportunity": {
-        "N": 5
+        "N": "5"
     },
     "Country": {
         "S": " US"
