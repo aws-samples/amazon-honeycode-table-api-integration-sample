@@ -9,6 +9,8 @@ const AWS = require('aws-sdk') //Requires atleast VERSION 2.7x
 const HC = new AWS.Honeycode({ region: 'us-west-2' })
 const S3 = new AWS.S3()
 const stringify = require('csv-stringify/lib/sync')
+
+//Read and initialize variables from the lambda environment. The lambda environment is set by CDK using env.json file 
 const { workbookId, contactHistoryTableName, s3bucket } = process.env
 
 

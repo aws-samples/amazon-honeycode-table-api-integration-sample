@@ -41,9 +41,7 @@ cd amazon-honeycode-table-api-integration-sample
 ```
 > Tip: Open **bin/honeycode-api-lab.js** to view the name of the stack. You can optionally rename the stack from **HoneycodeLab** to say **JohnHoneycodeLab** by adding your first name so it is easier to identify the resources that you create
 3. Open and update the **workbookId** with the value copied from your Customer Tracker Honeycode app
-    * **lambda/ImportCustomersS3/env.json**
-    * **lambda/ImportCustomersDynamoDB/env.json**
-    * **lambda/ExportContactHistoryS3/env.json** 
+    * **lambda/env.json**
 4. Open and replace [name@example.com](mailto:name@example.com) with the email address that you used for logging into Honeycode in:
     * **data/customers-s3.csv**
     * **data/customers-dynamodb.json**
