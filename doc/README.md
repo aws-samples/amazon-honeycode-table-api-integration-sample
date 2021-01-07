@@ -39,7 +39,7 @@ In this section, you create a [Serverless](https://aws.amazon.com/serverless/) A
 git clone https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample.git
 cd amazon-honeycode-table-api-integration-sample
 ```
-> Note: If you are sharing the same AWS account with other users, open **bin/honeycode-api-lab.js** to view the name of the stack and rename the stack from **HoneycodeLab** to say **JohnHoneycodeLab** by adding your first name so it is easier to identify the resources that you create
+> Note: Open **bin/honeycode-api-lab.js** to view the name of the stack and rename the stack from **HoneycodeLab** to say **JohnHoneycodeLab** by adding your first name so it is easier to identify the resources that you create
 3. Open **lambda/env.json** update the **workbookId** with the value copied from your Customer Tracker Honeycode app
     * **lambda/env.json**
 4. Open the following files and replace **name@example.com** with the email address that you used for logging into Honeycode in:
