@@ -58,10 +58,8 @@ cdk deploy
 >    * Create the event source (DynamoDB, S3 or Event Timer) for the Lambda functions
 >    * Add permissions for the Lambda to access Honeycode
 >    * Initialize the content in DynamoDB table, S3 bucket
-
-7. Copy the **S3manifestfileURL** value that is printed on the terminal at the end of `cdk deploy`. Use this URL to create the data set for visualization in Amazon QuickSight.
-
-8. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
+6. Copy the **S3manifestfileURL** value that is printed on the terminal at the end of `cdk deploy`. Use this URL to create the data set for visualization in Amazon QuickSight.
+7. Once the deployment is complete, wait a couple of minutes and then verify the application is running correctly by using the following steps:
     1. Open **A_Customers** table in Honeycode and verify that new records, **AnyCompany Auto** and **AnyCompany Water**, have been imported from S3 and DynamoDB respectively. 
     2. You can add/modify records in your **lamdba/ImportCustomersS3/customers-s3.csv** file in Cloud9 and run **cdk deploy** to replace/update the file in S3 bucket. Changes to customers-s3.csv file will be imported into Honeycode in about a minute. 
     3. Open [Amazon DynamoDB console](https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:), view the table starting with the name **\*HoneycodeLab-Customers\***, open the **Items** tab where you can add/update/remove items in the table. Changes you make in this table should appear in the Honeycode **A_Customers** table. 
