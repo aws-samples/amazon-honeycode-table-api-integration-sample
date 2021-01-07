@@ -47,6 +47,7 @@ cd amazon-honeycode-table-api-integration-sample
     * **data/customers-dynamodb.json**
 5. Run the following commands to start the deployment. This will take a few minutes to complete. 
 ```
+npm install -gf aws-cdk
 npm install
 cdk bootstrap
 cdk deploy
