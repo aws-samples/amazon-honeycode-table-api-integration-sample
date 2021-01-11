@@ -86,8 +86,10 @@ exports.handler = async ({ Records }) => {
                 customer.Status.S = status[customer.Status.S] || customer.Status.S
                 //Convert from DynamoDB json to Honeycode json
                 for (let key of Object.keys(customer)) {
-                    customer[columnIds[key]] = {
-                        fact: customer[key].S || customer[key].N.toString()
+                    if (columnIds[key]) {
+                        customer[columnIds[key]] = {
+                            fact: customer[key].S || customer[key].N.toString()
+                        }
                     }
                     delete customer[key]
                 }
