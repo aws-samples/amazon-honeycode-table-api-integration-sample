@@ -42,6 +42,7 @@ cd amazon-honeycode-table-api-integration-sample
 > Note: Open **bin/honeycode-api-lab.js** to view the name of the stack and rename the stack from **HoneycodeLab** to say **JohnHoneycodeLab** by adding your first name so it is easier to identify the resources that you create
 3. Open **lambda/env.json** update the **workbookId** with the value copied from your Customer Tracker Honeycode app
     * **lambda/env.json**
+> Note: If you plan to deploy this sample code in a different AWS account than the one that you linked with your Honeycode team, you need to setup a cross account IAM role as described in [Cross Account Access](cross-account-access.md)
 4. Open the following files and replace **name@example.com** with the email address that you used for logging into Honeycode in:
     * **data/customers-s3.csv**
     * **data/customers-dynamodb.json**

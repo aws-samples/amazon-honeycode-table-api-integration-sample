@@ -5,11 +5,10 @@
 /**
  * This lambda uses the `QueryTableRows` Honeycode APs to read contact history and saves them to an S3 bucket and then sets the Exported column in Honeycode table to today's date using the `BatchUpdateRows` Honeycode API
  */
-const AWS = require('aws-sdk') //Requires atleast VERSION 2.7x
-const HC = new AWS.Honeycode({ region: 'us-west-2' })
+const AWS = require('aws-sdk') //Requires atleast VERSION 2.8x
 const S3 = new AWS.S3()
 //Read and initialize variables from the lambda environment. The lambda environment is set by CDK using env.json file 
-const { workbookId, contactHistoryTableName, s3bucket } = process.env
+const { workbookId, contactHistoryTableName, s3bucket, crossAcountHoneycodeRoleArn } = process.env
 //Convert from JSON to CSV
 const stringify = require('csv-stringify/lib/sync')
 //Alternative stringify implementation to convert from Honeycode rows JSON array to Key:Value JSON format
@@ -30,6 +29,16 @@ const saveToS3 = Body => {
 
 exports.handler = async () => {
     try {
+        const honeycodeParams = { region: 'us-west-2' };
+        if (crossAcountHoneycodeRoleArn.indexOf("arn:aws") !== -1) {
+            //Assume this role to access Honeycode workbook using the cross account role
+            honeycodeParams.credentials = new AWS.ChainableTemporaryCredentials({
+                params: {
+                    RoleArn: crossAcountHoneycodeRoleArn,
+                }
+            })
+        }
+        const HC = new AWS.Honeycode(honeycodeParams)
         //Get tables in this workbook
         const { tables } = await HC.listTables({ workbookId }).promise()
         //Create a map of table name to table id
