@@ -1,6 +1,10 @@
 ## Accessing a Honeycode workbook from a different AWS account
 
-You can setup a cross account IAM role to allow access to your Honeycode workbooks for Lambda functions that are deployed in a different, trusted account. The steps to follow are:
+You can setup a cross account IAM role to allow access to your Honeycode workbooks for Lambda functions that are deployed in a different, trusted account. Here is an overview of how the sample code will use the cross account role to access your Honeycode workbook:
+
+![Amazon Honeycode cross account access](cross-account-access.png)
+
+The steps to follow are:
 
 1. Open the AWS console and login to the account where you are planning to deploy your Lambda functions/sample code
 2. Copy the 12 digit AWS account id for this account 
