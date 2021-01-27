@@ -8,11 +8,10 @@
  * Update or insert those customer records into Honeycode table
  */
 const AWS = require('aws-sdk')
-const HC = new AWS.Honeycode({ region: 'us-west-2' })
 const S3 = new AWS.S3()
 
 //Read and initialize variables from the lambda environment. The lambda environment is set by CDK using env.json file 
-const { workbookId, customersTableName } = process.env
+const { workbookId, customersTableName, crossAcountHoneycodeRoleArn } = process.env
 
 exports.handler = async ({ Records }) => {
     try {
@@ -22,6 +21,16 @@ exports.handler = async ({ Records }) => {
             return response;
         }
         console.log(`Received ${Records.length} record(s) from S3`);
+        const honeycodeParams = { region: 'us-west-2' };
+        if (crossAcountHoneycodeRoleArn.indexOf("arn:aws") !== -1) {
+            //Assume this role to access Honeycode workbook using the cross account role
+            honeycodeParams.credentials = new AWS.ChainableTemporaryCredentials({
+                params: {
+                    RoleArn: crossAcountHoneycodeRoleArn,
+                }
+            })
+        }
+        const HC = new AWS.Honeycode(honeycodeParams)
         //List tables in this workbook
         const { tables } = await HC.listTables({ workbookId }).promise();
         //Create a map of table name to table id

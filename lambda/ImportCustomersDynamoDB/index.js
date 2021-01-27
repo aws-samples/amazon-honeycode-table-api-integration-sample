@@ -8,13 +8,11 @@
  * Updates or inserts those customers into Honeycode
  */
 const AWS = require('aws-sdk')
-const HC = new AWS.Honeycode({ region: 'us-west-2' })
 
 //Read and initialize variables from the lambda environment. The lambda environment is set by CDK using env.json file 
-const { workbookId, customersTableName, countryTableName, statusTableName, contactHistoryTableName } = process.env
+const { workbookId, customersTableName, countryTableName, statusTableName, contactHistoryTableName, crossAcountHoneycodeRoleArn } = process.env
 
-
-const getRowlinks = async (table, tableIds) => {
+const getRowlinks = async (HC, table, tableIds) => {
     const { rows } = await HC.queryTableRows({
         workbookId, tableId: tableIds[table], filterFormula: {
             formula: `=FILTER(${table})`
@@ -35,6 +33,16 @@ exports.handler = async ({ Records }) => {
             return response;
         }
         console.log(`Received ${Records.length} record(s) from DynamoDB`)
+        const honeycodeParams = { region: 'us-west-2' };
+        if (crossAcountHoneycodeRoleArn.indexOf("arn:aws") !== -1) {
+            //Assume this role to access Honeycode workbook using the cross account role
+            honeycodeParams.credentials = new AWS.ChainableTemporaryCredentials({
+                params: {
+                    RoleArn: crossAcountHoneycodeRoleArn,
+                }
+            })
+        }
+        const HC = new AWS.Honeycode(honeycodeParams)
         //List tables in this workbook
         const { tables } = await HC.listTables({ workbookId }).promise()
         //Create a map of table name to table id
@@ -43,9 +51,9 @@ exports.handler = async ({ Records }) => {
             return tables
         }, {})
         //Get Country rows
-        const country = await getRowlinks(countryTableName, tableIds)
+        const country = await getRowlinks(HC, countryTableName, tableIds)
         //Get Status rows
-        const status = await getRowlinks(statusTableName, tableIds)
+        const status = await getRowlinks(HC, statusTableName, tableIds)
         //Get Customer table columns
         const { tableColumns } = await HC.listTableColumns({
             workbookId, tableId: tableIds[customersTableName]
@@ -71,14 +79,14 @@ exports.handler = async ({ Records }) => {
             if (record.eventName === 'REMOVE') {
                 if (lastEvent !== 'REMOVE') {
                     //Process pending events
-                    await processEvents(tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex);
+                    await processEvents(HC, tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex);
                 }
                 //Record to be removed from Honeycode
                 rowsToDelete.push({ company: record.dynamodb.Keys.Company.S });
             } else {
                 if (lastEvent === 'REMOVE') {
                     //Process pending events
-                    await processEvents(tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex);
+                    await processEvents(HC, tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex);
                 }
                 const { dynamodb: { NewImage: customer } } = record
                 //Replace Country and Status values with rowlinks
@@ -109,7 +117,7 @@ exports.handler = async ({ Records }) => {
             lastEvent = record.eventName;
         }
         //Process remaining events
-        await processEvents(tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex);
+        await processEvents(HC, tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex);
         return `Processed ${Records.length} records from DynamoDB`
     } catch (error) {
         console.error(error)
@@ -117,7 +125,7 @@ exports.handler = async ({ Records }) => {
     }
 }
 
-const getRows = (tableId, rows) => HC.queryTableRows({
+const getRows = (HC, tableId, rows) => HC.queryTableRows({
     workbookId,
     tableId,
     filterFormula: {
@@ -125,7 +133,7 @@ const getRows = (tableId, rows) => HC.queryTableRows({
     }
 }).promise();
 
-const getContactHistoryRows = (tableId, rows) => HC.queryTableRows({
+const getContactHistoryRows = (HC, tableId, rows) => HC.queryTableRows({
     workbookId,
     tableId,
     filterFormula: {
@@ -133,7 +141,7 @@ const getContactHistoryRows = (tableId, rows) => HC.queryTableRows({
     }
 }).promise();
 
-const batchDeleteRows = async (tableId, rows) => {
+const batchDeleteRows = async (HC, tableId, rows) => {
     if (rows && rows.length > 0) {
         //Batch delete rows
         const { failedBatchItems } = await HC.batchDeleteTableRows({
@@ -150,15 +158,15 @@ const batchDeleteRows = async (tableId, rows) => {
     }
 }
 
-const processEvents = async (tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex) => {
+const processEvents = async (HC, tableIds, rowsToCreate, rowsToUpdate, rowsToDelete, companyColumnIndex) => {
     //Delete rows in Honeycode
     if (rowsToDelete.length > 0) {
         //Get Contact History for these companies to be deleted
-        const { rows: historyRows } = await getContactHistoryRows(tableIds[contactHistoryTableName], rowsToDelete)
-        await batchDeleteRows(tableIds[contactHistoryTableName], historyRows);
+        const { rows: historyRows } = await getContactHistoryRows(HC, tableIds[contactHistoryTableName], rowsToDelete)
+        await batchDeleteRows(HC, tableIds[contactHistoryTableName], historyRows);
         //Get A_Company Row Ids to be deleted
-        const { rows } = await getRows(tableIds[customersTableName], rowsToDelete);
-        await batchDeleteRows(tableIds[customersTableName], rows);
+        const { rows } = await getRows(HC, tableIds[customersTableName], rowsToDelete);
+        await batchDeleteRows(HC, tableIds[customersTableName], rows);
         //Reset delete array
         rowsToDelete.length = 0;
     }
@@ -181,7 +189,7 @@ const processEvents = async (tableIds, rowsToCreate, rowsToUpdate, rowsToDelete,
     //Batch update rows in Honeycode
     if (rowsToUpdate.length > 0) {
         //Get Row Ids to be updated
-        const { rows } = await getRows(tableIds[customersTableName], rowsToUpdate);
+        const { rows } = await getRows(HC, tableIds[customersTableName], rowsToUpdate);
         if (rows && rows.length > 0) {
             //Convert to map of company name to rowId
             const rowIds = rows.reduce((rows, row) => {
