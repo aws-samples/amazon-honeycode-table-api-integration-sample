@@ -9,7 +9,7 @@
   "author": "kskandha@amazon.com",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.802.0"
+    "aws-sdk": "^2.814.0"
   },
   "repository": {
     "url": "https://github.com/aws-samples/amazon-honeycode-table-api-integration-sample"
