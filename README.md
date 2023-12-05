@@ -1,3 +1,9 @@
+# NOTICE
+
+This repository is archived, read-only, and no longer updated. For more information, read [the announcement on the Amazon Honeycode Community](https://honeycodecommunity.aws/t/honeycode-ending-soon-faq/28346).
+
+---
+
 # Use Amazon Honeycode Table API to integrate with Amazon S3 and Amazon DynamoDB
 
 This lab shows how to:
